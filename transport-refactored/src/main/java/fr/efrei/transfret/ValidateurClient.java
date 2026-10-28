@@ -9,7 +9,7 @@ public class ValidateurClient {
             System.out.println("ERREUR : nom obligatoire");
             return false;
         }
-        if (email == null || !email.contains("@") || !email.contains(".")) {
+        if (!Utils.emailValide(email)) {
             System.out.println("ERREUR : email invalide (" + email + ")");
             return false;
         }

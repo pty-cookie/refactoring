@@ -20,10 +20,6 @@ public class Utils {
         return FORMAT_DATE.format(d);
     }
 
-    public static String formaterPrix(double prix) {
-        return String.format("%.2f €", prix);
-    }
-
     public static boolean emailValide(String email) {
         return email != null && email.contains("@") && email.contains(".");
     }
