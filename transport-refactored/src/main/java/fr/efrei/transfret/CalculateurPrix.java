@@ -63,6 +63,6 @@ public class CalculateurPrix {
             if (montantAssurance < 15) montantAssurance = 15;
             prix = prix + montantAssurance;
         }
-        return Math.round(prix * 100.0) / 100.0;
+        return Utils.arrondir(prix);
     }
 }

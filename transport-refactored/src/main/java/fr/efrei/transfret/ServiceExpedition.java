@@ -73,7 +73,7 @@ public class ServiceExpedition {
         e.setStatut("CREEE");
         e.setVehicule(v);
         e.setPrixHT(calculateur.calculerPrixHT(colis, distance, mode, urgent, assurance, client.getType()));
-        e.setPrixTTC(Math.round(e.getPrixHT() * 1.2 * 100.0) / 100.0);
+        e.setPrixTTC(Utils.arrondir(e.getPrixHT() * 1.2));
         e.setDateCreation(new Date());
         Calendar cal = Calendar.getInstance();
         cal.setTime(e.getDateCreation());
@@ -94,7 +94,7 @@ public class ServiceExpedition {
             return -1;
         }
         double ht = calculateur.calculerPrixHT(colis, distance, mode, urgent, assurance, typeClient);
-        return Math.round(ht * 1.2 * 100.0) / 100.0;
+        return Utils.arrondir(ht * 1.2);
     }
 
     // retourne le délai de livraison en jours
@@ -183,7 +183,7 @@ public class ServiceExpedition {
         }
         if (e.getStatut().equals("EN_COURS")) {
             // 50% de frais si déjà partie
-            e.setFraisAnnulation(Math.round(e.getPrixTTC() * 0.5 * 100.0) / 100.0);
+            e.setFraisAnnulation(Utils.arrondir(e.getPrixTTC() * 0.5));
         }
         e.setStatut("ANNULEE");
         libererVehicule(e);
