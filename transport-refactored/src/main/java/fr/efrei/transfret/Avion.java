@@ -6,7 +6,12 @@ public class Avion extends Vehicule {
     private static final int ALTITUDE_CROISIERE_PIEDS = 35000;
 
     public Avion(String immatriculation, double capaciteMax) {
-        super(immatriculation, capaciteMax);
+        super(immatriculation, capaciteMax, ModeTransport.AIR);
+    }
+
+    @Override
+    protected boolean accepte(boolean dangereux, boolean refrigere) {
+        return true;
     }
 
     @Override

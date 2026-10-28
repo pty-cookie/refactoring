@@ -3,7 +3,12 @@ package fr.efrei.transfret;
 public class Train extends Vehicule {
 
     public Train(String immatriculation, double capaciteMax) {
-        super(immatriculation, capaciteMax);
+        super(immatriculation, capaciteMax, ModeTransport.RAIL);
+    }
+
+    @Override
+    protected boolean accepte(boolean dangereux, boolean refrigere) {
+        return true;
     }
 
     @Override

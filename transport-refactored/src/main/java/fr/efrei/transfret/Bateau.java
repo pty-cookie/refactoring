@@ -7,8 +7,13 @@ public class Bateau extends Vehicule {
     private boolean conteneursRefrigeres;
 
     public Bateau(String immatriculation, double capaciteMax, boolean conteneursRefrigeres) {
-        super(immatriculation, capaciteMax);
+        super(immatriculation, capaciteMax, ModeTransport.MER);
         this.conteneursRefrigeres = conteneursRefrigeres;
+    }
+
+    @Override
+    protected boolean accepte(boolean dangereux, boolean refrigere) {
+        return !refrigere || conteneursRefrigeres;
     }
 
     @Override
