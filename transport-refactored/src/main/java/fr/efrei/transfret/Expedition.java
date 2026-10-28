@@ -35,8 +35,7 @@ public class Expedition {
     public double getVolumeTotal() {
         double total = 0;
         for (int i = 0; i < colis.size(); i++) {
-            Colis c = colis.get(i);
-            total = total + (c.getLongueur() * c.getLargeur() * c.getHauteur()) / 1000000;
+            total = total + colis.get(i).getVolume();
         }
         return total;
     }
