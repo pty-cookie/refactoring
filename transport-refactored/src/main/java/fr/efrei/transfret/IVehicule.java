@@ -29,5 +29,5 @@ public interface IVehicule {
 
     boolean peutTransporterMatieresDangereuses();
 
-    void faireLePlein();
+    void preparerDepart();
 }

@@ -54,7 +54,8 @@ public abstract class Vehicule implements IVehicule {
     // fait partir le véhicule pour un trajet de distanceKm kilomètres
     public abstract void partir(int distanceKm);
 
-    public void faireLePlein() {
+    // fait le plein avant le départ
+    public void preparerDepart() {
         System.out.println("Plein effectué pour " + immatriculation);
     }
 }

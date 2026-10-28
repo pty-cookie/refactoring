@@ -98,10 +98,7 @@ public class ServiceExpedition {
         e.setStatut(StatutExpedition.EN_COURS);
         Vehicule v = e.getVehicule();
         v.setDisponible(false);
-        try {
-            v.faireLePlein();
-        } catch (Exception ex) {
-        }
+        v.preparerDepart();
         v.partir(e.getDistance());
         for (Colis c : e.getColis()) {
             if (c.getType() == TypeMarchandise.REFRIGERE) {

@@ -32,7 +32,7 @@ public class Train extends Vehicule {
     }
 
     @Override
-    public void faireLePlein() {
-        throw new UnsupportedOperationException("Un train électrique ne fait pas le plein");
+    public void preparerDepart() {
+        // un train électrique ne fait pas le plein
     }
 }
