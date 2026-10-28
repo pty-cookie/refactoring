@@ -9,11 +9,6 @@ public class CalculateurPrix {
     private static final double COEFFICIENT_REFRIGERE = 1.20;
     private static final double COEFFICIENT_URGENT = 1.5;
 
-    private static final double SEUIL_REMISE_ENTREPRISE_MAJOREE = 5000;
-    private static final double COEFFICIENT_REMISE_ENTREPRISE_MAJOREE = 0.85;
-    private static final double COEFFICIENT_REMISE_ENTREPRISE = 0.90;
-    private static final double COEFFICIENT_REMISE_PREMIUM = 0.80;
-
     private static final double TAUX_ASSURANCE = 0.02;
     private static final double MINIMUM_ASSURANCE = 15;
 
@@ -43,15 +38,7 @@ public class CalculateurPrix {
         if (urgent) prix = prix * COEFFICIENT_URGENT;
 
         // remise client
-        if (typeClient == TypeClient.ENTREPRISE) {
-            if (prix > SEUIL_REMISE_ENTREPRISE_MAJOREE) {
-                prix = prix * COEFFICIENT_REMISE_ENTREPRISE_MAJOREE;
-            } else {
-                prix = prix * COEFFICIENT_REMISE_ENTREPRISE;
-            }
-        } else if (typeClient == TypeClient.PREMIUM) {
-            prix = prix * COEFFICIENT_REMISE_PREMIUM;
-        }
+        prix = typeClient.getPolitiqueRemise().appliquer(prix);
 
         // assurance
         if (assurance) {
