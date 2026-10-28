@@ -22,12 +22,13 @@ public class ServiceExpedition {
     private ExpeditionRepository expeditions;
     private ValidateurExpedition validateur = new ValidateurExpedition();
     private CalculateurPrix calculateur = new CalculateurPrix();
-    private AffectationVehicule affectation = new AffectationVehicule();
+    private AffectationVehicule affectation;
     private EstimateurDelai estimateurDelai = new EstimateurDelai();
     private Notificateur notificateur;
 
-    public ServiceExpedition(ExpeditionRepository expeditions, Notificateur notificateur) {
+    public ServiceExpedition(ExpeditionRepository expeditions, AffectationVehicule affectation, Notificateur notificateur) {
         this.expeditions = expeditions;
+        this.affectation = affectation;
         this.notificateur = notificateur;
     }
 
