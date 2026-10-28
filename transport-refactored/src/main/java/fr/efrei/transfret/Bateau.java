@@ -23,16 +23,8 @@ public class Bateau extends Vehicule implements Refrigerant {
         naviguer((int) (distanceKm / KM_PAR_MILLE_NAUTIQUE));
     }
 
-    public void rouler(int km) {
-        throw new UnsupportedOperationException("Un bateau ne roule pas");
-    }
-
-    public void naviguer(int milesNautiques) {
+    private void naviguer(int milesNautiques) {
         System.out.println("Le navire " + immatriculation + " navigue sur " + milesNautiques + " milles nautiques");
-    }
-
-    public void voler(int altitude) {
-        throw new UnsupportedOperationException("Un bateau ne vole pas");
     }
 
     @Override
@@ -43,15 +35,8 @@ public class Bateau extends Vehicule implements Refrigerant {
         return Optional.empty();
     }
 
+    @Override
     public void activerRefrigeration(double temperature) {
         System.out.println("Conteneurs frigorifiques réglés à " + temperature + "°C");
-    }
-
-    public boolean peutTransporterMatieresDangereuses() {
-        return true;
-    }
-
-    public boolean aConteneursRefrigeres() {
-        return conteneursRefrigeres;
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class Vehicule implements IVehicule {
+public abstract class Vehicule {
 
     protected String immatriculation;
     protected double capaciteMax;

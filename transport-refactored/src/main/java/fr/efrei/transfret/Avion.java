@@ -20,24 +20,12 @@ public class Avion extends Vehicule {
         voler(ALTITUDE_CROISIERE_PIEDS);
     }
 
-    public void rouler(int km) {
+    private void rouler(int km) {
         // roulage sur la piste
         System.out.println("L'avion " + immatriculation + " roule sur la piste");
     }
 
-    public void naviguer(int milesNautiques) {
-        throw new UnsupportedOperationException("Un avion ne navigue pas");
-    }
-
-    public void voler(int altitude) {
+    private void voler(int altitude) {
         System.out.println("L'avion " + immatriculation + " vole à " + altitude + " pieds");
-    }
-
-    public void activerRefrigeration(double temperature) {
-        throw new UnsupportedOperationException("Pas de soute réfrigérée");
-    }
-
-    public boolean peutTransporterMatieresDangereuses() {
-        return false;
     }
 }
