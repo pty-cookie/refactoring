@@ -18,16 +18,20 @@ public class ServiceExpedition {
     private static final double TEMPERATURE_REFRIGERATION = 4;
 
     private ExpeditionRepository expeditions;
-    private ValidateurExpedition validateur = new ValidateurExpedition();
-    private CalculateurPrix calculateur = new CalculateurPrix();
+    private ValidateurExpedition validateur;
+    private CalculateurPrix calculateur;
     private AffectationVehicule affectation;
-    private EstimateurDelai estimateurDelai = new EstimateurDelai();
+    private EstimateurDelai estimateurDelai;
     private Notificateur notificateur;
     private int compteur = 0;
 
-    public ServiceExpedition(ExpeditionRepository expeditions, AffectationVehicule affectation, Notificateur notificateur) {
+    public ServiceExpedition(ExpeditionRepository expeditions, ValidateurExpedition validateur, CalculateurPrix calculateur,
+                             AffectationVehicule affectation, EstimateurDelai estimateurDelai, Notificateur notificateur) {
         this.expeditions = expeditions;
+        this.validateur = validateur;
+        this.calculateur = calculateur;
         this.affectation = affectation;
+        this.estimateurDelai = estimateurDelai;
         this.notificateur = notificateur;
     }
 

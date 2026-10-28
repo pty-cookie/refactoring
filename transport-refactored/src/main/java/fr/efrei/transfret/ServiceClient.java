@@ -4,10 +4,11 @@ public class ServiceClient {
 
     private ClientRepository clients;
     private CanalEmail canalEmail;
-    private ValidateurClient validateur = new ValidateurClient();
+    private ValidateurClient validateur;
 
-    public ServiceClient(ClientRepository clients, CanalEmail canalEmail) {
+    public ServiceClient(ClientRepository clients, ValidateurClient validateur, CanalEmail canalEmail) {
         this.clients = clients;
+        this.validateur = validateur;
         this.canalEmail = canalEmail;
     }
 

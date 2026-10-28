@@ -8,8 +8,9 @@ public class Main {
     public static void main(String[] args) {
         Database database = new Database();
         EmailService email = new EmailService();
-        ServiceClient serviceClient = new ServiceClient(database, email);
-        ServiceExpedition serviceExpedition = new ServiceExpedition(database, new AffectationVehicule(new Flotte()), new Notificateur(email, new SmsService()));
+        ServiceClient serviceClient = new ServiceClient(database, new ValidateurClient(), email);
+        ServiceExpedition serviceExpedition = new ServiceExpedition(database, new ValidateurExpedition(), new CalculateurPrix(),
+                new AffectationVehicule(new Flotte()), new EstimateurDelai(), new Notificateur(email, new SmsService()));
         GenerateurFacture generateurFacture = new GenerateurFacture();
 
         System.out.println("\n----- Clients -----");
