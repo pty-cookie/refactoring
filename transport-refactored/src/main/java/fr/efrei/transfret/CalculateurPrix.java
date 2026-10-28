@@ -4,18 +4,6 @@ import java.util.List;
 
 public class CalculateurPrix {
 
-    private static final double TARIF_KM_ROUTE = 1.2;
-    private static final double TARIF_KG_ROUTE = 0.10;
-    private static final double TARIF_KM_RAIL = 0.8;
-    private static final double TARIF_KG_RAIL = 0.07;
-    private static final double MINIMUM_RAIL = 150;
-    private static final double TARIF_KM_MER = 0.5;
-    private static final double TARIF_KG_MER = 0.03;
-    private static final double MINIMUM_MER = 500;
-    private static final double TARIF_KM_AIR = 0.6;
-    private static final double TARIF_KG_TAXABLE_AIR = 4.5;
-    private static final double KG_VOLUMETRIQUES_PAR_M3 = 167;
-
     private static final double COEFFICIENT_FRAGILE = 1.15;
     private static final double COEFFICIENT_DANGEREUX = 1.30;
     private static final double COEFFICIENT_REFRIGERE = 1.20;
@@ -46,24 +34,7 @@ public class CalculateurPrix {
         }
 
         // tarif de base selon le mode
-        double prix;
-        if (mode == ModeTransport.ROUTE) {
-            prix = distance * TARIF_KM_ROUTE + poids * TARIF_KG_ROUTE;
-        } else if (mode == ModeTransport.RAIL) {
-            prix = distance * TARIF_KM_RAIL + poids * TARIF_KG_RAIL;
-            if (prix < MINIMUM_RAIL) prix = MINIMUM_RAIL;
-        } else if (mode == ModeTransport.MER) {
-            prix = distance * TARIF_KM_MER + poids * TARIF_KG_MER;
-            if (prix < MINIMUM_MER) prix = MINIMUM_MER;
-        } else if (mode == ModeTransport.AIR) {
-            double poidsTaxable = poids;
-            if (volume * KG_VOLUMETRIQUES_PAR_M3 > poids) {
-                poidsTaxable = volume * KG_VOLUMETRIQUES_PAR_M3;
-            }
-            prix = distance * TARIF_KM_AIR + poidsTaxable * TARIF_KG_TAXABLE_AIR;
-        } else {
-            throw new IllegalArgumentException("Mode inconnu : " + mode);
-        }
+        double prix = mode.getTarif().calculer(distance, poids, volume);
 
         // suppléments
         if (fragile) prix = prix * COEFFICIENT_FRAGILE;
