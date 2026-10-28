@@ -13,28 +13,15 @@ public class CalculateurPrix {
     private static final double MINIMUM_ASSURANCE = 15;
 
     public double calculerPrixHT(List<Colis> colis, int distance, ModeTransport mode, boolean urgent, boolean assurance, TypeClient typeClient) {
-        double poids = 0;
-        double volume = 0;
-        double valeur = 0;
-        boolean fragile = false;
-        boolean dangereux = false;
-        boolean refrigere = false;
-        for (Colis c : colis) {
-            poids = poids + c.getPoids();
-            volume = volume + c.getVolume();
-            valeur = valeur + c.getValeurDeclaree();
-            if (c.getType() == TypeMarchandise.FRAGILE) fragile = true;
-            if (c.getType() == TypeMarchandise.DANGEREUX) dangereux = true;
-            if (c.getType() == TypeMarchandise.REFRIGERE) refrigere = true;
-        }
+        DemandeTarif demande = new DemandeTarif(colis, distance, mode, urgent, assurance, typeClient);
 
         // tarif de base selon le mode
-        double prix = mode.getTarif().calculer(distance, poids, volume);
+        double prix = mode.getTarif().calculer(distance, demande.poidsTotal(), demande.volumeTotal());
 
         // suppléments
-        if (fragile) prix = prix * COEFFICIENT_FRAGILE;
-        if (dangereux) prix = prix * COEFFICIENT_DANGEREUX;
-        if (refrigere) prix = prix * COEFFICIENT_REFRIGERE;
+        if (demande.contient(TypeMarchandise.FRAGILE)) prix = prix * COEFFICIENT_FRAGILE;
+        if (demande.contient(TypeMarchandise.DANGEREUX)) prix = prix * COEFFICIENT_DANGEREUX;
+        if (demande.contient(TypeMarchandise.REFRIGERE)) prix = prix * COEFFICIENT_REFRIGERE;
         if (urgent) prix = prix * COEFFICIENT_URGENT;
 
         // remise client
@@ -42,7 +29,7 @@ public class CalculateurPrix {
 
         // assurance
         if (assurance) {
-            double montantAssurance = valeur * TAUX_ASSURANCE;
+            double montantAssurance = demande.valeurTotale() * TAUX_ASSURANCE;
             if (montantAssurance < MINIMUM_ASSURANCE) montantAssurance = MINIMUM_ASSURANCE;
             prix = prix + montantAssurance;
         }
