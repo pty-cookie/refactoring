@@ -53,7 +53,7 @@ public class NouveauSystemeAdapter implements SystemeTransport {
     public Optional<String> creerExpedition(DemandeExpedition d) {
         Client client = Database.clients.get(d.refClient());
         Expedition expedition = serviceExpedition.creerExpedition(client, versColis(d.colis()), d.villeDepart(),
-                d.villeArrivee(), d.mode().name(), d.urgent(), d.assurance());
+                d.villeArrivee(), fr.efrei.transfret.ModeTransport.valueOf(d.mode().name()), d.urgent(), d.assurance());
         return Optional.ofNullable(expedition).map(Expedition::getId);
     }
 
@@ -71,7 +71,7 @@ public class NouveauSystemeAdapter implements SystemeTransport {
     @Override
     public OptionalDouble devisTTC(DemandeDevis d) {
         double devis = serviceExpedition.calculerDevis(versColis(d.colis()), d.villeDepart(), d.villeArrivee(),
-                d.mode().name(), d.urgent(), d.assurance(), d.typeClient().name());
+                fr.efrei.transfret.ModeTransport.valueOf(d.mode().name()), d.urgent(), d.assurance(), d.typeClient().name());
         return devis == -1 ? OptionalDouble.empty() : OptionalDouble.of(devis);
     }
 

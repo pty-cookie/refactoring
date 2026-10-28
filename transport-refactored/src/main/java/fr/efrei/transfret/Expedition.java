@@ -12,7 +12,7 @@ public class Expedition {
     private String villeDepart;
     private String villeArrivee;
     private int distance;
-    private String mode;
+    private ModeTransport mode;
     private boolean urgent;
     private boolean assurance;
     private String statut;
@@ -129,11 +129,11 @@ public class Expedition {
         this.distance = distance;
     }
 
-    public String getMode() {
+    public ModeTransport getMode() {
         return mode;
     }
 
-    public void setMode(String mode) {
+    public void setMode(ModeTransport mode) {
         this.mode = mode;
     }
 

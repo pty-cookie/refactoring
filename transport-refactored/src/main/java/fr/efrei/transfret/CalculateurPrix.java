@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CalculateurPrix {
 
-    public double calculerPrixHT(List<Colis> colis, int distance, String mode, boolean urgent, boolean assurance, String typeClient) {
+    public double calculerPrixHT(List<Colis> colis, int distance, ModeTransport mode, boolean urgent, boolean assurance, String typeClient) {
         double poids = 0;
         double volume = 0;
         double valeur = 0;
@@ -22,15 +22,15 @@ public class CalculateurPrix {
 
         // tarif de base selon le mode
         double prix;
-        if (mode.equals("ROUTE")) {
+        if (mode == ModeTransport.ROUTE) {
             prix = distance * 1.2 + poids * 0.10;
-        } else if (mode.equals("RAIL")) {
+        } else if (mode == ModeTransport.RAIL) {
             prix = distance * 0.8 + poids * 0.07;
             if (prix < 150) prix = 150;
-        } else if (mode.equals("MER")) {
+        } else if (mode == ModeTransport.MER) {
             prix = distance * 0.5 + poids * 0.03;
             if (prix < 500) prix = 500;
-        } else if (mode.equals("AIR")) {
+        } else if (mode == ModeTransport.AIR) {
             double poidsTaxable = poids;
             if (volume * 167 > poids) {
                 poidsTaxable = volume * 167;
