@@ -33,9 +33,6 @@ public record DemandeTarif(List<Colis> colis, int distance, ModeTransport mode, 
     }
 
     public boolean contient(TypeMarchandise type) {
-        for (Colis c : colis) {
-            if (c.getType() == type) return true;
-        }
-        return false;
+        return Colis.auMoinsUn(colis, type);
     }
 }

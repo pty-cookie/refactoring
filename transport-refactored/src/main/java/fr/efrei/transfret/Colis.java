@@ -1,5 +1,7 @@
 package fr.efrei.transfret;
 
+import java.util.List;
+
 public class Colis {
 
     private static final double CM3_PAR_M3 = 1000000;
@@ -20,6 +22,14 @@ public class Colis {
         this.hauteur = hauteur;
         this.type = type;
         this.valeurDeclaree = valeurDeclaree;
+    }
+
+    // vrai si au moins un des colis est du type donné
+    public static boolean auMoinsUn(List<Colis> colis, TypeMarchandise type) {
+        for (Colis c : colis) {
+            if (c.getType() == type) return true;
+        }
+        return false;
     }
 
     // volume en m3

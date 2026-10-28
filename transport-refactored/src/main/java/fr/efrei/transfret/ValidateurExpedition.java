@@ -13,16 +13,14 @@ public class ValidateurExpedition {
             System.out.println("ERREUR : au moins un colis est nécessaire");
             return false;
         }
-        boolean dangereux = false;
-        boolean refrigere = false;
         for (Colis c : colis) {
             if (c.getPoids() <= 0) {
                 System.out.println("ERREUR : poids invalide pour " + c.getDescription());
                 return false;
             }
-            if (c.getType() == TypeMarchandise.DANGEREUX) dangereux = true;
-            if (c.getType() == TypeMarchandise.REFRIGERE) refrigere = true;
         }
+        boolean dangereux = Colis.auMoinsUn(colis, TypeMarchandise.DANGEREUX);
+        boolean refrigere = Colis.auMoinsUn(colis, TypeMarchandise.REFRIGERE);
         if (dangereux && !mode.accepteMatieresDangereuses()) {
             System.out.println("ERREUR : les matières dangereuses sont interdites en transport aérien");
             return false;

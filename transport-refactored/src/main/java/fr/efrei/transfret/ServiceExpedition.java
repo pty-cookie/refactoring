@@ -100,11 +100,8 @@ public class ServiceExpedition {
         v.setDisponible(false);
         v.preparerDepart();
         v.partir(e.getDistance());
-        for (Colis c : e.getColis()) {
-            if (c.getType() == TypeMarchandise.REFRIGERE) {
-                v.refrigeration().ifPresent(r -> r.activerRefrigeration(TEMPERATURE_REFRIGERATION));
-                break;
-            }
+        if (Colis.auMoinsUn(e.getColis(), TypeMarchandise.REFRIGERE)) {
+            v.refrigeration().ifPresent(r -> r.activerRefrigeration(TEMPERATURE_REFRIGERATION));
         }
         expeditions.mettreAJourStatut(e);
         notificateur.notifier(e.getClient(), "Votre expédition " + e.getId() + " est en route",

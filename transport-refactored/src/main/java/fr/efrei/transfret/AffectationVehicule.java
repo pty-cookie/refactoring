@@ -13,13 +13,11 @@ public class AffectationVehicule {
     // retourne le premier véhicule disponible et compatible, null si aucun
     public Vehicule trouverVehicule(List<Colis> colis, ModeTransport mode) {
         double poids = 0;
-        boolean dangereux = false;
-        boolean refrigere = false;
         for (Colis c : colis) {
             poids = poids + c.getPoids();
-            if (c.getType() == TypeMarchandise.DANGEREUX) dangereux = true;
-            if (c.getType() == TypeMarchandise.REFRIGERE) refrigere = true;
         }
+        boolean dangereux = Colis.auMoinsUn(colis, TypeMarchandise.DANGEREUX);
+        boolean refrigere = Colis.auMoinsUn(colis, TypeMarchandise.REFRIGERE);
         for (Vehicule v : flotte.getVehicules()) {
             if (v.peutPrendreEnCharge(mode, poids, dangereux, refrigere)) {
                 return v;
