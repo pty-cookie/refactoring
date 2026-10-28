@@ -6,6 +6,11 @@ public class Train extends Vehicule {
         super(immatriculation, capaciteMax);
     }
 
+    @Override
+    public void partir(int distanceKm) {
+        rouler(distanceKm);
+    }
+
     public void rouler(int km) {
         System.out.println("Le train " + immatriculation + " circule sur " + km + " km de voies ferrées");
     }

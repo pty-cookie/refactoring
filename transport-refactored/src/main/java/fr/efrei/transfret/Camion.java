@@ -9,6 +9,11 @@ public class Camion extends Vehicule {
         this.adr = adr;
     }
 
+    @Override
+    public void partir(int distanceKm) {
+        rouler(distanceKm);
+    }
+
     public void rouler(int km) {
         System.out.println("Le camion " + immatriculation + " roule sur " + km + " km");
     }

@@ -2,8 +2,17 @@ package fr.efrei.transfret;
 
 public class Avion extends Vehicule {
 
+    private static final int DISTANCE_ROULAGE_PISTE_KM = 2;
+    private static final int ALTITUDE_CROISIERE_PIEDS = 35000;
+
     public Avion(String immatriculation, double capaciteMax) {
         super(immatriculation, capaciteMax);
+    }
+
+    @Override
+    public void partir(int distanceKm) {
+        rouler(DISTANCE_ROULAGE_PISTE_KM);
+        voler(ALTITUDE_CROISIERE_PIEDS);
     }
 
     public void rouler(int km) {

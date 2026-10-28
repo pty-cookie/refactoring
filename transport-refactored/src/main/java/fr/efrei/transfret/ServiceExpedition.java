@@ -12,9 +12,6 @@ public class ServiceExpedition {
     private static final int SUFFIXE_ID_MIN = 1000;
     private static final int SUFFIXE_ID_NB_VALEURS = 9000;
 
-    private static final double KM_PAR_MILLE_NAUTIQUE = 1.852;
-    private static final int DISTANCE_ROULAGE_PISTE_KM = 2;
-    private static final int ALTITUDE_CROISIERE_PIEDS = 35000;
     private static final double TEMPERATURE_REFRIGERATION = 4;
 
     private ExpeditionRepository expeditions;
@@ -105,14 +102,7 @@ public class ServiceExpedition {
             v.faireLePlein();
         } catch (Exception ex) {
         }
-        if (e.getMode() == ModeTransport.ROUTE || e.getMode() == ModeTransport.RAIL) {
-            v.rouler(e.getDistance());
-        } else if (e.getMode() == ModeTransport.MER) {
-            v.naviguer((int) (e.getDistance() / KM_PAR_MILLE_NAUTIQUE));
-        } else if (e.getMode() == ModeTransport.AIR) {
-            v.rouler(DISTANCE_ROULAGE_PISTE_KM);
-            v.voler(ALTITUDE_CROISIERE_PIEDS);
-        }
+        v.partir(e.getDistance());
         for (Colis c : e.getColis()) {
             if (c.getType() == TypeMarchandise.REFRIGERE) {
                 v.activerRefrigeration(TEMPERATURE_REFRIGERATION);

@@ -2,11 +2,18 @@ package fr.efrei.transfret;
 
 public class Bateau extends Vehicule {
 
+    private static final double KM_PAR_MILLE_NAUTIQUE = 1.852;
+
     private boolean conteneursRefrigeres;
 
     public Bateau(String immatriculation, double capaciteMax, boolean conteneursRefrigeres) {
         super(immatriculation, capaciteMax);
         this.conteneursRefrigeres = conteneursRefrigeres;
+    }
+
+    @Override
+    public void partir(int distanceKm) {
+        naviguer((int) (distanceKm / KM_PAR_MILLE_NAUTIQUE));
     }
 
     public void rouler(int km) {
