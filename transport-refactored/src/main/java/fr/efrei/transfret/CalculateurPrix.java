@@ -4,7 +4,7 @@ import java.util.List;
 
 public class CalculateurPrix {
 
-    public double calculerPrixHT(List<Colis> colis, int distance, ModeTransport mode, boolean urgent, boolean assurance, String typeClient) {
+    public double calculerPrixHT(List<Colis> colis, int distance, ModeTransport mode, boolean urgent, boolean assurance, TypeClient typeClient) {
         double poids = 0;
         double volume = 0;
         double valeur = 0;
@@ -47,13 +47,13 @@ public class CalculateurPrix {
         if (urgent) prix = prix * 1.5;
 
         // remise client
-        if (typeClient.equals("ENTREPRISE")) {
+        if (typeClient == TypeClient.ENTREPRISE) {
             if (prix > 5000) {
                 prix = prix * 0.85;
             } else {
                 prix = prix * 0.90;
             }
-        } else if (typeClient.equals("PREMIUM")) {
+        } else if (typeClient == TypeClient.PREMIUM) {
             prix = prix * 0.80;
         }
 

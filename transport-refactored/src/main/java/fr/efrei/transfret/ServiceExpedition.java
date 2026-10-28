@@ -88,7 +88,7 @@ public class ServiceExpedition {
     }
 
     // retourne le prix TTC, -1 si le trajet est inconnu
-    public double calculerDevis(List<Colis> colis, String villeDepart, String villeArrivee, ModeTransport mode, boolean urgent, boolean assurance, String typeClient) {
+    public double calculerDevis(List<Colis> colis, String villeDepart, String villeArrivee, ModeTransport mode, boolean urgent, boolean assurance, TypeClient typeClient) {
         int distance = Utils.getDistance(villeDepart, villeArrivee);
         if (distance == -1) {
             return -1;
@@ -203,7 +203,7 @@ public class ServiceExpedition {
 
     private void notifier(Client client, String sujet, String corps, String sms) {
         EmailService.envoyer(client.getEmail(), sujet, corps);
-        if (client.getType().equals("PREMIUM")) {
+        if (client.getType() == TypeClient.PREMIUM) {
             new SmsService().envoyerSms(client.getTelephone(), sms);
         }
     }

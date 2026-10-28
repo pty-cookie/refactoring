@@ -11,9 +11,9 @@ public class Main {
         ServiceExpedition serviceExpedition = new ServiceExpedition();
 
         System.out.println("\n----- Clients -----");
-        Client dupont = serviceClient.creerClient("Jean Dupont", "jean.dupont@mail.fr", "0601020304", "12 rue de la Paix, 75002 Paris", "PARTICULIER", null);
-        Client transco = serviceClient.creerClient("Transco SA", "contact@transco.fr", "0144556677", "ZI des Chanteraines, 92390 Villeneuve", "ENTREPRISE", "12345678900012");
-        Client logiplus = serviceClient.creerClient("LogiPlus", "ops@logiplus.com", "0788990011", "3 quai du Port, 13002 Marseille", "PREMIUM", null);
+        Client dupont = serviceClient.creerClient("Jean Dupont", "jean.dupont@mail.fr", "0601020304", "12 rue de la Paix, 75002 Paris", TypeClient.PARTICULIER, null);
+        Client transco = serviceClient.creerClient("Transco SA", "contact@transco.fr", "0144556677", "ZI des Chanteraines, 92390 Villeneuve", TypeClient.ENTREPRISE, "12345678900012");
+        Client logiplus = serviceClient.creerClient("LogiPlus", "ops@logiplus.com", "0788990011", "3 quai du Port, 13002 Marseille", TypeClient.PREMIUM, null);
 
         System.out.println("\n----- Expéditions -----");
         List<Colis> colis1 = new ArrayList<Colis>();
@@ -36,7 +36,7 @@ public class Main {
         System.out.println("\n----- Devis -----");
         List<Colis> palette = new ArrayList<Colis>();
         palette.add(new Colis("Palette", 800, 120, 80, 150, TypeMarchandise.STANDARD, 2000));
-        System.out.println("Paris -> Bordeaux ROUTE : " + serviceExpedition.calculerDevis(palette, "Paris", "Bordeaux", ModeTransport.ROUTE, false, false, "PARTICULIER") + " € TTC");
+        System.out.println("Paris -> Bordeaux ROUTE : " + serviceExpedition.calculerDevis(palette, "Paris", "Bordeaux", ModeTransport.ROUTE, false, false, TypeClient.PARTICULIER) + " € TTC");
 
         System.out.println("\n----- Cycle de vie -----");
         serviceExpedition.demarrerExpedition(exp1.getId());

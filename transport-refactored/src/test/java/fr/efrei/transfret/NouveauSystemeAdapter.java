@@ -45,7 +45,7 @@ public class NouveauSystemeAdapter implements SystemeTransport {
 
     @Override
     public Optional<String> creerClient(DemandeClient d) {
-        Client client = serviceClient.creerClient(d.nom(), d.email(), d.telephone(), d.adresse(), d.type().name(), d.siret());
+        Client client = serviceClient.creerClient(d.nom(), d.email(), d.telephone(), d.adresse(), fr.efrei.transfret.TypeClient.valueOf(d.type().name()), d.siret());
         return Optional.ofNullable(client).map(Client::getEmail);
     }
 
@@ -71,7 +71,8 @@ public class NouveauSystemeAdapter implements SystemeTransport {
     @Override
     public OptionalDouble devisTTC(DemandeDevis d) {
         double devis = serviceExpedition.calculerDevis(versColis(d.colis()), d.villeDepart(), d.villeArrivee(),
-                fr.efrei.transfret.ModeTransport.valueOf(d.mode().name()), d.urgent(), d.assurance(), d.typeClient().name());
+                fr.efrei.transfret.ModeTransport.valueOf(d.mode().name()), d.urgent(), d.assurance(),
+                fr.efrei.transfret.TypeClient.valueOf(d.typeClient().name()));
         return devis == -1 ? OptionalDouble.empty() : OptionalDouble.of(devis);
     }
 

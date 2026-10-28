@@ -57,7 +57,7 @@ public class Expedition {
         sb.append("Facture n° F-" + id + "\n");
         sb.append("Date : " + Utils.formaterDate(new Date()) + "\n");
         sb.append("Client : " + client.getNom() + "\n");
-        if (client.getType().equals("ENTREPRISE")) {
+        if (client.getType() == TypeClient.ENTREPRISE) {
             sb.append("SIRET : " + client.getSiret() + "\n");
         }
         sb.append("Adresse : " + client.getAdresse() + "\n");
