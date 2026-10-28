@@ -7,8 +7,9 @@ public class Main {
 
     public static void main(String[] args) {
         Flotte.initialiser();
-        ServiceClient serviceClient = new ServiceClient();
-        ServiceExpedition serviceExpedition = new ServiceExpedition();
+        Database database = new Database();
+        ServiceClient serviceClient = new ServiceClient(database);
+        ServiceExpedition serviceExpedition = new ServiceExpedition(database);
         GenerateurFacture generateurFacture = new GenerateurFacture();
 
         System.out.println("\n----- Clients -----");
