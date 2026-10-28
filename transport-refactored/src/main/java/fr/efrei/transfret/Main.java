@@ -9,7 +9,7 @@ public class Main {
         Database database = new Database();
         EmailService email = new EmailService();
         ServiceClient serviceClient = new ServiceClient(database, new ValidateurClient(), email);
-        ServiceExpedition serviceExpedition = new ServiceExpedition(database, new ValidateurExpedition(), new CalculateurPrix(),
+        ServiceExpedition serviceExpedition = new ServiceExpedition(database, new ValidateurExpedition(), new CalculateurPrix(new AssembleurPrix().assembler()),
                 new AffectationVehicule(new Flotte()), new EstimateurDelai(), new Notificateur(email, new SmsService()));
         GenerateurFacture generateurFacture = new GenerateurFacture();
 

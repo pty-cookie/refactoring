@@ -40,7 +40,7 @@ public class NouveauSystemeAdapter implements SystemeTransport {
         email = new EmailService();
         sms = new SmsService();
         serviceClient = new ServiceClient(database, new ValidateurClient(), email);
-        serviceExpedition = new ServiceExpedition(database, new ValidateurExpedition(), new CalculateurPrix(),
+        serviceExpedition = new ServiceExpedition(database, new ValidateurExpedition(), new CalculateurPrix(new AssembleurPrix().assembler()),
                 new AffectationVehicule(new Flotte()), new EstimateurDelai(), new Notificateur(email, sms));
         generateurFacture = new GenerateurFacture();
     }
