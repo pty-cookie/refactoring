@@ -29,8 +29,8 @@ public class ServiceExpedition {
                 System.out.println("ERREUR : poids invalide pour " + c.getDescription());
                 return null;
             }
-            if (c.getType() == 2) dangereux = true;
-            if (c.getType() == 3) refrigere = true;
+            if (c.getType() == TypeMarchandise.DANGEREUX) dangereux = true;
+            if (c.getType() == TypeMarchandise.REFRIGERE) refrigere = true;
         }
         if (dangereux && mode.equals("AIR")) {
             System.out.println("ERREUR : les matières dangereuses sont interdites en transport aérien");
@@ -148,7 +148,7 @@ public class ServiceExpedition {
             v.voler(35000);
         }
         for (Colis c : e.getColis()) {
-            if (c.getType() == 3) {
+            if (c.getType() == TypeMarchandise.REFRIGERE) {
                 v.activerRefrigeration(4);
                 break;
             }

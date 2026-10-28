@@ -15,9 +15,9 @@ public class CalculateurPrix {
             poids = poids + c.getPoids();
             volume = volume + c.getVolume();
             valeur = valeur + c.getValeurDeclaree();
-            if (c.getType() == 1) fragile = true;
-            if (c.getType() == 2) dangereux = true;
-            if (c.getType() == 3) refrigere = true;
+            if (c.getType() == TypeMarchandise.FRAGILE) fragile = true;
+            if (c.getType() == TypeMarchandise.DANGEREUX) dangereux = true;
+            if (c.getType() == TypeMarchandise.REFRIGERE) refrigere = true;
         }
 
         // tarif de base selon le mode

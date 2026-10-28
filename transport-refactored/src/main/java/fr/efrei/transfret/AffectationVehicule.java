@@ -11,8 +11,8 @@ public class AffectationVehicule {
         boolean refrigere = false;
         for (Colis c : colis) {
             poids = poids + c.getPoids();
-            if (c.getType() == 2) dangereux = true;
-            if (c.getType() == 3) refrigere = true;
+            if (c.getType() == TypeMarchandise.DANGEREUX) dangereux = true;
+            if (c.getType() == TypeMarchandise.REFRIGERE) refrigere = true;
         }
         for (Vehicule v : Flotte.vehicules) {
             if (!v.estDisponible()) continue;
