@@ -12,20 +12,6 @@ public class ServiceExpedition {
     private static final int SUFFIXE_ID_MIN = 1000;
     private static final int SUFFIXE_ID_NB_VALEURS = 9000;
 
-    private static final double VITESSE_ROUTE_KMH = 70.0;
-    private static final int HEURES_CONDUITE_PAR_JOUR = 9;
-    private static final int HEURES_CONDUITE_PAR_JOUR_URGENT = 18;
-    private static final double KM_PAR_JOUR_RAIL = 1440.0;
-    private static final int JOURS_MANUTENTION_RAIL = 1;
-    private static final int JOURS_GAGNES_URGENT_RAIL = 1;
-    private static final double KM_PAR_JOUR_MER = 720.0;
-    private static final int JOURS_MANUTENTION_MER = 2;
-    private static final int JOURS_AIR = 1;
-    private static final int JOURS_AIR_LONG_COURRIER = 2;
-    private static final int JOURS_AIR_URGENT = 1;
-    private static final int DISTANCE_LONG_COURRIER_KM = 3000;
-    private static final int DELAI_MINIMUM_JOURS = 1;
-
     private static final double KM_PAR_MILLE_NAUTIQUE = 1.852;
     private static final int DISTANCE_ROULAGE_PISTE_KM = 2;
     private static final int ALTITUDE_CROISIERE_PIEDS = 35000;
@@ -36,6 +22,7 @@ public class ServiceExpedition {
     private Database db = Database.getInstance();
     private CalculateurPrix calculateur = new CalculateurPrix();
     private AffectationVehicule affectation = new AffectationVehicule();
+    private EstimateurDelai estimateurDelai = new EstimateurDelai();
 
     public Expedition creerExpedition(Client client, List<Colis> colis, String villeDepart, String villeArrivee, ModeTransport mode, boolean urgent, boolean assurance) {
         if (client == null) {
@@ -101,7 +88,7 @@ public class ServiceExpedition {
         e.setDateCreation(new Date());
         Calendar cal = Calendar.getInstance();
         cal.setTime(e.getDateCreation());
-        cal.add(Calendar.DAY_OF_MONTH, calculerDelai(distance, mode, urgent));
+        cal.add(Calendar.DAY_OF_MONTH, estimateurDelai.calculerDelai(distance, mode, urgent));
         e.setDateLivraisonPrevue(cal.getTime());
 
         db.sauvegarderExpedition(e);
@@ -119,35 +106,6 @@ public class ServiceExpedition {
         }
         double ht = calculateur.calculerPrixHT(colis, distance, mode, urgent, assurance, typeClient);
         return Utils.arrondir(ht * COEFFICIENT_TTC);
-    }
-
-    // retourne le délai de livraison en jours
-    public int calculerDelai(int distance, ModeTransport mode, boolean urgent) {
-        int jours = 0;
-        switch (mode) {
-            case ROUTE:
-                double heures = distance / VITESSE_ROUTE_KMH;
-                if (urgent) {
-                    jours = (int) Math.ceil(heures / HEURES_CONDUITE_PAR_JOUR_URGENT);
-                } else {
-                    jours = (int) Math.ceil(heures / HEURES_CONDUITE_PAR_JOUR);
-                }
-                break;
-            case RAIL:
-                jours = (int) Math.ceil(distance / KM_PAR_JOUR_RAIL) + JOURS_MANUTENTION_RAIL;
-                if (urgent) jours = jours - JOURS_GAGNES_URGENT_RAIL;
-                break;
-            case MER:
-                jours = (int) Math.ceil(distance / KM_PAR_JOUR_MER) + JOURS_MANUTENTION_MER;
-                break;
-            case AIR:
-                jours = JOURS_AIR;
-                if (distance > DISTANCE_LONG_COURRIER_KM) jours = JOURS_AIR_LONG_COURRIER;
-                if (urgent) jours = JOURS_AIR_URGENT;
-                break;
-        }
-        if (jours < DELAI_MINIMUM_JOURS) jours = DELAI_MINIMUM_JOURS;
-        return jours;
     }
 
     public boolean demarrerExpedition(String id) {
