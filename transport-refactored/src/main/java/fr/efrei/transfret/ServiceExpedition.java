@@ -7,6 +7,30 @@ import java.util.Random;
 
 public class ServiceExpedition {
 
+    private static final double COEFFICIENT_TTC = 1.2;
+    private static final double TAUX_FRAIS_ANNULATION = 0.5;
+    private static final int SUFFIXE_ID_MIN = 1000;
+    private static final int SUFFIXE_ID_NB_VALEURS = 9000;
+
+    private static final double VITESSE_ROUTE_KMH = 70.0;
+    private static final int HEURES_CONDUITE_PAR_JOUR = 9;
+    private static final int HEURES_CONDUITE_PAR_JOUR_URGENT = 18;
+    private static final double KM_PAR_JOUR_RAIL = 1440.0;
+    private static final int JOURS_MANUTENTION_RAIL = 1;
+    private static final int JOURS_GAGNES_URGENT_RAIL = 1;
+    private static final double KM_PAR_JOUR_MER = 720.0;
+    private static final int JOURS_MANUTENTION_MER = 2;
+    private static final int JOURS_AIR = 1;
+    private static final int JOURS_AIR_LONG_COURRIER = 2;
+    private static final int JOURS_AIR_URGENT = 1;
+    private static final int DISTANCE_LONG_COURRIER_KM = 3000;
+    private static final int DELAI_MINIMUM_JOURS = 1;
+
+    private static final double KM_PAR_MILLE_NAUTIQUE = 1.852;
+    private static final int DISTANCE_ROULAGE_PISTE_KM = 2;
+    private static final int ALTITUDE_CROISIERE_PIEDS = 35000;
+    private static final double TEMPERATURE_REFRIGERATION = 4;
+
     public static int compteur = 0;
 
     private Database db = Database.getInstance();
@@ -61,7 +85,7 @@ public class ServiceExpedition {
 
         Expedition e = new Expedition();
         compteur++;
-        e.setId("EXP-" + compteur + "-" + (1000 + new Random().nextInt(9000)));
+        e.setId("EXP-" + compteur + "-" + (SUFFIXE_ID_MIN + new Random().nextInt(SUFFIXE_ID_NB_VALEURS)));
         e.setClient(client);
         e.setColis(colis);
         e.setVilleDepart(villeDepart);
@@ -73,7 +97,7 @@ public class ServiceExpedition {
         e.setStatut(StatutExpedition.CREEE);
         e.setVehicule(v);
         e.setPrixHT(calculateur.calculerPrixHT(colis, distance, mode, urgent, assurance, client.getType()));
-        e.setPrixTTC(Utils.arrondir(e.getPrixHT() * 1.2));
+        e.setPrixTTC(Utils.arrondir(e.getPrixHT() * COEFFICIENT_TTC));
         e.setDateCreation(new Date());
         Calendar cal = Calendar.getInstance();
         cal.setTime(e.getDateCreation());
@@ -94,7 +118,7 @@ public class ServiceExpedition {
             return -1;
         }
         double ht = calculateur.calculerPrixHT(colis, distance, mode, urgent, assurance, typeClient);
-        return Utils.arrondir(ht * 1.2);
+        return Utils.arrondir(ht * COEFFICIENT_TTC);
     }
 
     // retourne le délai de livraison en jours
@@ -102,27 +126,27 @@ public class ServiceExpedition {
         int jours = 0;
         switch (mode) {
             case ROUTE:
-                double heures = distance / 70.0;
+                double heures = distance / VITESSE_ROUTE_KMH;
                 if (urgent) {
-                    jours = (int) Math.ceil(heures / 18);
+                    jours = (int) Math.ceil(heures / HEURES_CONDUITE_PAR_JOUR_URGENT);
                 } else {
-                    jours = (int) Math.ceil(heures / 9);
+                    jours = (int) Math.ceil(heures / HEURES_CONDUITE_PAR_JOUR);
                 }
                 break;
             case RAIL:
-                jours = (int) Math.ceil(distance / 1440.0) + 1;
-                if (urgent) jours = jours - 1;
+                jours = (int) Math.ceil(distance / KM_PAR_JOUR_RAIL) + JOURS_MANUTENTION_RAIL;
+                if (urgent) jours = jours - JOURS_GAGNES_URGENT_RAIL;
                 break;
             case MER:
-                jours = (int) Math.ceil(distance / 720.0) + 2;
+                jours = (int) Math.ceil(distance / KM_PAR_JOUR_MER) + JOURS_MANUTENTION_MER;
                 break;
             case AIR:
-                jours = 1;
-                if (distance > 3000) jours = 2;
-                if (urgent) jours = 1;
+                jours = JOURS_AIR;
+                if (distance > DISTANCE_LONG_COURRIER_KM) jours = JOURS_AIR_LONG_COURRIER;
+                if (urgent) jours = JOURS_AIR_URGENT;
                 break;
         }
-        if (jours < 1) jours = 1;
+        if (jours < DELAI_MINIMUM_JOURS) jours = DELAI_MINIMUM_JOURS;
         return jours;
     }
 
@@ -142,14 +166,14 @@ public class ServiceExpedition {
         if (e.getMode() == ModeTransport.ROUTE || e.getMode() == ModeTransport.RAIL) {
             v.rouler(e.getDistance());
         } else if (e.getMode() == ModeTransport.MER) {
-            v.naviguer((int) (e.getDistance() / 1.852));
+            v.naviguer((int) (e.getDistance() / KM_PAR_MILLE_NAUTIQUE));
         } else if (e.getMode() == ModeTransport.AIR) {
-            v.rouler(2);
-            v.voler(35000);
+            v.rouler(DISTANCE_ROULAGE_PISTE_KM);
+            v.voler(ALTITUDE_CROISIERE_PIEDS);
         }
         for (Colis c : e.getColis()) {
             if (c.getType() == TypeMarchandise.REFRIGERE) {
-                v.activerRefrigeration(4);
+                v.activerRefrigeration(TEMPERATURE_REFRIGERATION);
                 break;
             }
         }
@@ -183,7 +207,7 @@ public class ServiceExpedition {
         }
         if (e.getStatut() == StatutExpedition.EN_COURS) {
             // 50% de frais si déjà partie
-            e.setFraisAnnulation(Utils.arrondir(e.getPrixTTC() * 0.5));
+            e.setFraisAnnulation(Utils.arrondir(e.getPrixTTC() * TAUX_FRAIS_ANNULATION));
         }
         e.setStatut(StatutExpedition.ANNULEE);
         libererVehicule(e);

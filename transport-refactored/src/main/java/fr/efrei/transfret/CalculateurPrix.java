@@ -4,6 +4,31 @@ import java.util.List;
 
 public class CalculateurPrix {
 
+    private static final double TARIF_KM_ROUTE = 1.2;
+    private static final double TARIF_KG_ROUTE = 0.10;
+    private static final double TARIF_KM_RAIL = 0.8;
+    private static final double TARIF_KG_RAIL = 0.07;
+    private static final double MINIMUM_RAIL = 150;
+    private static final double TARIF_KM_MER = 0.5;
+    private static final double TARIF_KG_MER = 0.03;
+    private static final double MINIMUM_MER = 500;
+    private static final double TARIF_KM_AIR = 0.6;
+    private static final double TARIF_KG_TAXABLE_AIR = 4.5;
+    private static final double KG_VOLUMETRIQUES_PAR_M3 = 167;
+
+    private static final double COEFFICIENT_FRAGILE = 1.15;
+    private static final double COEFFICIENT_DANGEREUX = 1.30;
+    private static final double COEFFICIENT_REFRIGERE = 1.20;
+    private static final double COEFFICIENT_URGENT = 1.5;
+
+    private static final double SEUIL_REMISE_ENTREPRISE_MAJOREE = 5000;
+    private static final double COEFFICIENT_REMISE_ENTREPRISE_MAJOREE = 0.85;
+    private static final double COEFFICIENT_REMISE_ENTREPRISE = 0.90;
+    private static final double COEFFICIENT_REMISE_PREMIUM = 0.80;
+
+    private static final double TAUX_ASSURANCE = 0.02;
+    private static final double MINIMUM_ASSURANCE = 15;
+
     public double calculerPrixHT(List<Colis> colis, int distance, ModeTransport mode, boolean urgent, boolean assurance, TypeClient typeClient) {
         double poids = 0;
         double volume = 0;
@@ -23,44 +48,44 @@ public class CalculateurPrix {
         // tarif de base selon le mode
         double prix;
         if (mode == ModeTransport.ROUTE) {
-            prix = distance * 1.2 + poids * 0.10;
+            prix = distance * TARIF_KM_ROUTE + poids * TARIF_KG_ROUTE;
         } else if (mode == ModeTransport.RAIL) {
-            prix = distance * 0.8 + poids * 0.07;
-            if (prix < 150) prix = 150;
+            prix = distance * TARIF_KM_RAIL + poids * TARIF_KG_RAIL;
+            if (prix < MINIMUM_RAIL) prix = MINIMUM_RAIL;
         } else if (mode == ModeTransport.MER) {
-            prix = distance * 0.5 + poids * 0.03;
-            if (prix < 500) prix = 500;
+            prix = distance * TARIF_KM_MER + poids * TARIF_KG_MER;
+            if (prix < MINIMUM_MER) prix = MINIMUM_MER;
         } else if (mode == ModeTransport.AIR) {
             double poidsTaxable = poids;
-            if (volume * 167 > poids) {
-                poidsTaxable = volume * 167;
+            if (volume * KG_VOLUMETRIQUES_PAR_M3 > poids) {
+                poidsTaxable = volume * KG_VOLUMETRIQUES_PAR_M3;
             }
-            prix = distance * 0.6 + poidsTaxable * 4.5;
+            prix = distance * TARIF_KM_AIR + poidsTaxable * TARIF_KG_TAXABLE_AIR;
         } else {
             throw new IllegalArgumentException("Mode inconnu : " + mode);
         }
 
         // suppléments
-        if (fragile) prix = prix * 1.15;
-        if (dangereux) prix = prix * 1.30;
-        if (refrigere) prix = prix * 1.20;
-        if (urgent) prix = prix * 1.5;
+        if (fragile) prix = prix * COEFFICIENT_FRAGILE;
+        if (dangereux) prix = prix * COEFFICIENT_DANGEREUX;
+        if (refrigere) prix = prix * COEFFICIENT_REFRIGERE;
+        if (urgent) prix = prix * COEFFICIENT_URGENT;
 
         // remise client
         if (typeClient == TypeClient.ENTREPRISE) {
-            if (prix > 5000) {
-                prix = prix * 0.85;
+            if (prix > SEUIL_REMISE_ENTREPRISE_MAJOREE) {
+                prix = prix * COEFFICIENT_REMISE_ENTREPRISE_MAJOREE;
             } else {
-                prix = prix * 0.90;
+                prix = prix * COEFFICIENT_REMISE_ENTREPRISE;
             }
         } else if (typeClient == TypeClient.PREMIUM) {
-            prix = prix * 0.80;
+            prix = prix * COEFFICIENT_REMISE_PREMIUM;
         }
 
         // assurance
         if (assurance) {
-            double montantAssurance = valeur * 0.02;
-            if (montantAssurance < 15) montantAssurance = 15;
+            double montantAssurance = valeur * TAUX_ASSURANCE;
+            if (montantAssurance < MINIMUM_ASSURANCE) montantAssurance = MINIMUM_ASSURANCE;
             prix = prix + montantAssurance;
         }
         return Utils.arrondir(prix);

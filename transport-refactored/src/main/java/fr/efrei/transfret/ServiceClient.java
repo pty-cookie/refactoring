@@ -2,6 +2,8 @@ package fr.efrei.transfret;
 
 public class ServiceClient {
 
+    private static final int LONGUEUR_SIRET = 14;
+
     public Client creerClient(String nom, String email, String telephone, String adresse, TypeClient type, String siret) {
         if (nom == null || nom.trim().length() == 0) {
             System.out.println("ERREUR : nom obligatoire");
@@ -11,7 +13,7 @@ public class ServiceClient {
             System.out.println("ERREUR : email invalide (" + email + ")");
             return null;
         }
-        if (type == TypeClient.ENTREPRISE && (siret == null || siret.length() != 14)) {
+        if (type == TypeClient.ENTREPRISE && (siret == null || siret.length() != LONGUEUR_SIRET)) {
             System.out.println("ERREUR : SIRET obligatoire (14 chiffres) pour une entreprise");
             return null;
         }

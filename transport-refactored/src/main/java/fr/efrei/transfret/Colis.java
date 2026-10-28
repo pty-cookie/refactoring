@@ -2,6 +2,8 @@ package fr.efrei.transfret;
 
 public class Colis {
 
+    private static final double CM3_PAR_M3 = 1000000;
+
     private String description;
     private double poids;        // en kg
     private double longueur;     // en cm
@@ -22,7 +24,7 @@ public class Colis {
 
     // volume en m3
     public double getVolume() {
-        return (longueur * largeur * hauteur) / 1000000;
+        return (longueur * largeur * hauteur) / CM3_PAR_M3;
     }
 
     public String getLibelleType() {
