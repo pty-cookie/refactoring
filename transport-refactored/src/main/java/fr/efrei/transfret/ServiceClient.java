@@ -3,10 +3,12 @@ package fr.efrei.transfret;
 public class ServiceClient {
 
     private ClientRepository clients;
+    private CanalEmail canalEmail;
     private ValidateurClient validateur = new ValidateurClient();
 
-    public ServiceClient(ClientRepository clients) {
+    public ServiceClient(ClientRepository clients, CanalEmail canalEmail) {
         this.clients = clients;
+        this.canalEmail = canalEmail;
     }
 
     public Client creerClient(String nom, String email, String telephone, String adresse, TypeClient type, String siret) {
@@ -15,7 +17,7 @@ public class ServiceClient {
         }
         Client c = new Client(nom, email, telephone, adresse, type, siret);
         clients.sauvegarderClient(c);
-        EmailService.envoyer(c.getEmail(), "Bienvenue chez TransFret", "Bonjour " + c.getNom() + ", votre compte " + c.getType().name().toLowerCase() + " a été créé.");
+        canalEmail.envoyer(c.getEmail(), "Bienvenue chez TransFret", "Bonjour " + c.getNom() + ", votre compte " + c.getType().name().toLowerCase() + " a été créé.");
         return c;
     }
 }

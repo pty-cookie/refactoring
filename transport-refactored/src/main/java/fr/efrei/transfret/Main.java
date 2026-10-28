@@ -8,8 +8,9 @@ public class Main {
     public static void main(String[] args) {
         Flotte.initialiser();
         Database database = new Database();
-        ServiceClient serviceClient = new ServiceClient(database);
-        ServiceExpedition serviceExpedition = new ServiceExpedition(database);
+        EmailService email = new EmailService();
+        ServiceClient serviceClient = new ServiceClient(database, email);
+        ServiceExpedition serviceExpedition = new ServiceExpedition(database, new Notificateur(email, new SmsService()));
         GenerateurFacture generateurFacture = new GenerateurFacture();
 
         System.out.println("\n----- Clients -----");

@@ -24,10 +24,11 @@ public class ServiceExpedition {
     private CalculateurPrix calculateur = new CalculateurPrix();
     private AffectationVehicule affectation = new AffectationVehicule();
     private EstimateurDelai estimateurDelai = new EstimateurDelai();
-    private Notificateur notificateur = new Notificateur();
+    private Notificateur notificateur;
 
-    public ServiceExpedition(ExpeditionRepository expeditions) {
+    public ServiceExpedition(ExpeditionRepository expeditions, Notificateur notificateur) {
         this.expeditions = expeditions;
+        this.notificateur = notificateur;
     }
 
     public Expedition creerExpedition(Client client, List<Colis> colis, String villeDepart, String villeArrivee, ModeTransport mode, boolean urgent, boolean assurance) {

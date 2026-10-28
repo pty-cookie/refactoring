@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 public class NouveauSystemeAdapter implements SystemeTransport {
 
     private Database database;
+    private EmailService email;
+    private SmsService sms;
     private ServiceClient serviceClient;
     private ServiceExpedition serviceExpedition;
     private GenerateurFacture generateurFacture;
@@ -35,12 +37,12 @@ public class NouveauSystemeAdapter implements SystemeTransport {
     @Override
     public void reinitialiser() {
         database = new Database();
-        EmailService.journal.clear();
-        SmsService.journal.clear();
+        email = new EmailService();
+        sms = new SmsService();
         ServiceExpedition.compteur = 0;
         Flotte.initialiser();
-        serviceClient = new ServiceClient(database);
-        serviceExpedition = new ServiceExpedition(database);
+        serviceClient = new ServiceClient(database, email);
+        serviceExpedition = new ServiceExpedition(database, new Notificateur(email, sms));
         generateurFacture = new GenerateurFacture();
     }
 
@@ -100,11 +102,11 @@ public class NouveauSystemeAdapter implements SystemeTransport {
     @Override
     public List<Notification> notifications() {
         List<Notification> notifications = new ArrayList<>();
-        for (String[] email : EmailService.journal) {
-            notifications.add(new Notification(Canal.EMAIL, email[0], email[1]));
+        for (String[] mail : email.getJournal()) {
+            notifications.add(new Notification(Canal.EMAIL, mail[0], mail[1]));
         }
-        for (String[] sms : SmsService.journal) {
-            notifications.add(new Notification(Canal.SMS, sms[0], sms[1]));
+        for (String[] texto : sms.getJournal()) {
+            notifications.add(new Notification(Canal.SMS, texto[0], texto[1]));
         }
         return notifications;
     }
