@@ -70,7 +70,7 @@ public class ServiceExpedition {
         e.setMode(mode);
         e.setUrgent(urgent);
         e.setAssurance(assurance);
-        e.setStatut("CREEE");
+        e.setStatut(StatutExpedition.CREEE);
         e.setVehicule(v);
         e.setPrixHT(calculateur.calculerPrixHT(colis, distance, mode, urgent, assurance, client.getType()));
         e.setPrixTTC(Utils.arrondir(e.getPrixHT() * 1.2));
@@ -128,11 +128,11 @@ public class ServiceExpedition {
 
     public boolean demarrerExpedition(String id) {
         Expedition e = db.trouverExpedition(id);
-        if (e == null || !e.getStatut().equals("CREEE")) {
+        if (e == null || e.getStatut() != StatutExpedition.CREEE) {
             System.out.println("ERREUR : impossible de démarrer l'expédition " + id);
             return false;
         }
-        e.setStatut("EN_COURS");
+        e.setStatut(StatutExpedition.EN_COURS);
         Vehicule v = e.getVehicule();
         v.setDisponible(false);
         try {
@@ -162,11 +162,11 @@ public class ServiceExpedition {
 
     public boolean livrerExpedition(String id) {
         Expedition e = db.trouverExpedition(id);
-        if (e == null || !e.getStatut().equals("EN_COURS")) {
+        if (e == null || e.getStatut() != StatutExpedition.EN_COURS) {
             System.out.println("ERREUR : impossible de livrer l'expédition " + id);
             return false;
         }
-        e.setStatut("LIVREE");
+        e.setStatut(StatutExpedition.LIVREE);
         libererVehicule(e);
         db.mettreAJourStatut(e);
         notifier(e.getClient(), "Votre expédition " + e.getId() + " est livrée",
@@ -177,15 +177,15 @@ public class ServiceExpedition {
 
     public boolean annulerExpedition(String id) {
         Expedition e = db.trouverExpedition(id);
-        if (e == null || e.getStatut().equals("LIVREE") || e.getStatut().equals("ANNULEE")) {
+        if (e == null || e.getStatut() == StatutExpedition.LIVREE || e.getStatut() == StatutExpedition.ANNULEE) {
             System.out.println("ERREUR : impossible d'annuler l'expédition " + id);
             return false;
         }
-        if (e.getStatut().equals("EN_COURS")) {
+        if (e.getStatut() == StatutExpedition.EN_COURS) {
             // 50% de frais si déjà partie
             e.setFraisAnnulation(Utils.arrondir(e.getPrixTTC() * 0.5));
         }
-        e.setStatut("ANNULEE");
+        e.setStatut(StatutExpedition.ANNULEE);
         libererVehicule(e);
         db.mettreAJourStatut(e);
         notifier(e.getClient(), "Annulation de votre expédition " + e.getId(),

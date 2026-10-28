@@ -64,7 +64,7 @@ public class NouveauSystemeAdapter implements SystemeTransport {
             return Optional.empty();
         }
         int delai = (int) ChronoUnit.DAYS.between(jour(e.getDateCreation()), jour(e.getDateLivraisonPrevue()));
-        return Optional.of(new EtatExpedition(e.getId(), Statut.valueOf(e.getStatut()), e.getPrixHT(), e.getPrixTTC(),
+        return Optional.of(new EtatExpedition(e.getId(), Statut.valueOf(e.getStatut().name()), e.getPrixHT(), e.getPrixTTC(),
                 delai, e.getVehicule().getImmatriculation(), e.getFraisAnnulation()));
     }
 

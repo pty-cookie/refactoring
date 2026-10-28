@@ -15,7 +15,7 @@ public class Expedition {
     private ModeTransport mode;
     private boolean urgent;
     private boolean assurance;
-    private String statut;
+    private StatutExpedition statut;
     private Date dateCreation;
     private Date dateLivraisonPrevue;
     private Vehicule vehicule;
@@ -69,7 +69,7 @@ public class Expedition {
             sb.append("  - " + c.getDescription() + " : " + c.getPoids() + " kg [" + c.getLibelleType() + "]\n");
         }
         sb.append("----------------------------------------------\n");
-        if (statut.equals("ANNULEE")) {
+        if (statut == StatutExpedition.ANNULEE) {
             sb.append("EXPEDITION ANNULEE\n");
             sb.append("Frais d'annulation TTC : " + String.format("%.2f", fraisAnnulation) + " €\n");
         } else {
@@ -153,11 +153,11 @@ public class Expedition {
         this.assurance = assurance;
     }
 
-    public String getStatut() {
+    public StatutExpedition getStatut() {
         return statut;
     }
 
-    public void setStatut(String statut) {
+    public void setStatut(StatutExpedition statut) {
         this.statut = statut;
     }
 
