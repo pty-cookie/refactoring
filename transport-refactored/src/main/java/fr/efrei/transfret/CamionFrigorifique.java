@@ -1,6 +1,8 @@
 package fr.efrei.transfret;
 
-public class CamionFrigorifique extends Camion {
+import java.util.Optional;
+
+public class CamionFrigorifique extends Camion implements Refrigerant {
 
     public CamionFrigorifique(String immatriculation, double capaciteMax) {
         super(immatriculation, capaciteMax, false);
@@ -20,6 +22,11 @@ public class CamionFrigorifique extends Camion {
     @Override
     protected String messageMarchandiseRefusee() {
         return "Un camion frigorifique ne transporte que des produits réfrigérés";
+    }
+
+    @Override
+    public Optional<Refrigerant> refrigeration() {
+        return Optional.of(this);
     }
 
     @Override

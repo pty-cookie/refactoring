@@ -1,6 +1,8 @@
 package fr.efrei.transfret;
 
-public class Bateau extends Vehicule {
+import java.util.Optional;
+
+public class Bateau extends Vehicule implements Refrigerant {
 
     private static final double KM_PAR_MILLE_NAUTIQUE = 1.852;
 
@@ -33,10 +35,15 @@ public class Bateau extends Vehicule {
         throw new UnsupportedOperationException("Un bateau ne vole pas");
     }
 
-    public void activerRefrigeration(double temperature) {
-        if (!conteneursRefrigeres) {
-            throw new UnsupportedOperationException("Pas de conteneurs frigorifiques sur ce navire");
+    @Override
+    public Optional<Refrigerant> refrigeration() {
+        if (conteneursRefrigeres) {
+            return Optional.of(this);
         }
+        return Optional.empty();
+    }
+
+    public void activerRefrigeration(double temperature) {
         System.out.println("Conteneurs frigorifiques réglés à " + temperature + "°C");
     }
 

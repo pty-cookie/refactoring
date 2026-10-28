@@ -102,7 +102,7 @@ public class ServiceExpedition {
         v.partir(e.getDistance());
         for (Colis c : e.getColis()) {
             if (c.getType() == TypeMarchandise.REFRIGERE) {
-                v.activerRefrigeration(TEMPERATURE_REFRIGERATION);
+                v.refrigeration().ifPresent(r -> r.activerRefrigeration(TEMPERATURE_REFRIGERATION));
                 break;
             }
         }

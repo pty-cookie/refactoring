@@ -2,6 +2,7 @@ package fr.efrei.transfret;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class Vehicule implements IVehicule {
 
@@ -79,6 +80,11 @@ public abstract class Vehicule implements IVehicule {
 
     protected String messageMarchandiseRefusee() {
         return "Marchandise refusée par " + immatriculation;
+    }
+
+    // équipement de réfrigération du véhicule, s'il en a un
+    public Optional<Refrigerant> refrigeration() {
+        return Optional.empty();
     }
 
     // fait partir le véhicule pour un trajet de distanceKm kilomètres
