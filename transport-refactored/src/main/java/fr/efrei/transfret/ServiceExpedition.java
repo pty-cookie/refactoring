@@ -17,14 +17,13 @@ public class ServiceExpedition {
     private static final int ALTITUDE_CROISIERE_PIEDS = 35000;
     private static final double TEMPERATURE_REFRIGERATION = 4;
 
-    public static int compteur = 0;
-
     private ExpeditionRepository expeditions;
     private ValidateurExpedition validateur = new ValidateurExpedition();
     private CalculateurPrix calculateur = new CalculateurPrix();
     private AffectationVehicule affectation;
     private EstimateurDelai estimateurDelai = new EstimateurDelai();
     private Notificateur notificateur;
+    private int compteur = 0;
 
     public ServiceExpedition(ExpeditionRepository expeditions, AffectationVehicule affectation, Notificateur notificateur) {
         this.expeditions = expeditions;
